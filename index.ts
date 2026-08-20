@@ -11,6 +11,14 @@ mkdirSync(dirname(dbPath), { recursive: true }); // bun:sqlite creates the file,
 const db = new Database(dbPath);
 db.exec("PRAGMA journal_mode = WAL;");
 
+// ---------------------------------------------------------------------------
+// Theme — driven by the RED_BULL_THEME environment variable.
+// Truthy (1/true/yes/on) => Red Bull livery, otherwise Scuderia Ferrari.
+// ---------------------------------------------------------------------------
+const RED_BULL = /^(1|true|yes|on)$/i.test((process.env.RED_BULL_THEME ?? "").trim());
+const THEME = RED_BULL ? "redbull" : "ferrari";
+const THEME_LABEL = RED_BULL ? "Oracle Red Bull Racing" : "Scuderia Ferrari";
+
 db.exec(`
   CREATE TABLE IF NOT EXISTS circuits (
     id           INTEGER PRIMARY KEY,
@@ -130,6 +138,8 @@ if (driverCount.n === 0) {
 // ---------------------------------------------------------------------------
 const app = new Hono();
 
+app.get("/api/config", (c) => c.json({ theme: THEME, themeLabel: THEME_LABEL }));
+
 app.get("/api/circuits", (c) => {
   const rows = db.query("SELECT * FROM circuits ORDER BY round ASC").all();
   return c.json(rows);
@@ -162,13 +172,20 @@ app.post("/api/drivers/:id/favorite", (c) => {
 // Static files
 // ---------------------------------------------------------------------------
 const publicDir = `${import.meta.dir}/public`;
+
+async function serveIndex(): Promise<Response> {
+  let html = await Bun.file(`${publicDir}/index.html`).text();
+  html = html.replaceAll("__THEME__", THEME).replaceAll("__THEME_LABEL__", THEME_LABEL);
+  return new Response(html, { headers: { "content-type": "text/html; charset=utf-8" } });
+}
+
 app.get("/*", async (c) => {
   const url = new URL(c.req.url);
-  let path = url.pathname === "/" ? "/index.html" : url.pathname;
-  const file = Bun.file(`${publicDir}${path}`);
+  if (url.pathname === "/" || url.pathname === "/index.html") return serveIndex();
+  const file = Bun.file(`${publicDir}${url.pathname}`);
   if (await file.exists()) return new Response(file);
   // SPA-ish fallback
-  return new Response(Bun.file(`${publicDir}/index.html`));
+  return serveIndex();
 });
 
 console.log(`F1 Race Tracker running on port ${process.env.PORT || 3000}`);

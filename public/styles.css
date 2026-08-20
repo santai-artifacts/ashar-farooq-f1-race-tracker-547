@@ -1,23 +1,42 @@
 :root {
-  --bg: #0b0b0f;
-  --bg-2: #12121a;
-  --surface: #171722;
-  --surface-2: #1e1e2c;
-  --border: #2a2a3a;
   --text: #f2f2f7;
   --muted: #9a9ab0;
-  --red: #e10600;
-  --red-glow: rgba(225, 6, 0, 0.35);
-  --gold: #ffd166;
   --radius: 16px;
   --shadow: 0 10px 40px rgba(0, 0, 0, 0.45);
+
+  /* Default: Scuderia Ferrari livery (deep red-tinted dark) */
+  --bg: #0c0a0b;
+  --bg-2: #141013;
+  --bg-glow: #2a0d12;
+  --surface: #1a1418;
+  --surface-2: #241a1f;
+  --border: #35262c;
+  --red: #e8002d;              /* accent */
+  --red-glow: rgba(232, 6, 45, 0.4);
+  --gold: #ffe24b;            /* Ferrari yellow */
+  --brand-hi: #ff5a54;        /* brand wordmark mid-stop */
+}
+
+/* Oracle Red Bull Racing livery (navy-tinted dark) */
+[data-theme="redbull"] {
+  --bg: #070b18;
+  --bg-2: #0c1226;
+  --bg-glow: #10234f;
+  --surface: #101832;
+  --surface-2: #16204a;
+  --border: #26335e;
+  --red: #ed1c24;             /* accent */
+  --red-glow: rgba(237, 28, 36, 0.45);
+  --gold: #ffc400;            /* Red Bull yellow */
+  --brand-hi: #4a7bff;        /* brand wordmark mid-stop (electric blue) */
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
   font-family: "Inter", system-ui, sans-serif;
-  background: radial-gradient(1200px 600px at 50% -10%, #1a1030 0%, var(--bg) 55%);
+  background: radial-gradient(1200px 600px at 50% -10%, var(--bg-glow) 0%, var(--bg) 55%);
+  transition: background 0.4s ease;
   color: var(--text);
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
@@ -58,13 +77,26 @@ body {
   font-family: "Racing Sans One", sans-serif;
   font-size: 34px;
   letter-spacing: 2px;
-  background: linear-gradient(90deg, #fff 0%, #ff5a54 60%, var(--red) 100%);
+  background: linear-gradient(90deg, #fff 0%, var(--brand-hi) 60%, var(--red) 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
   line-height: 1;
 }
 .tagline { color: var(--muted); font-size: 13px; font-weight: 500; margin-top: 3px; letter-spacing: 0.5px; }
+.theme-pill {
+  display: inline-block;
+  margin-top: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--red);
+  background: color-mix(in srgb, var(--red) 14%, transparent);
+  border: 1px solid color-mix(in srgb, var(--red) 45%, transparent);
+  padding: 3px 10px;
+  border-radius: 999px;
+}
 
 .next-race {
   background: linear-gradient(135deg, var(--surface) 0%, var(--surface-2) 100%);
