@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Paddock — F1 Race Tracker</title>
+  <meta name="description" content="Track the 2026 Formula 1 season. Favorite your circuits and drivers." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Racing+Sans+One&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <div class="grid-overlay" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="brand">
+      <span class="brand-mark">🏁</span>
+      <div>
+        <h1>PADDOCK</h1>
+        <p class="tagline">2026 F1 World Championship</p>
+      </div>
+    </div>
+    <div class="next-race" id="nextRace" aria-live="polite"></div>
+  </header>
+
+  <nav class="tabs" role="tablist">
+    <button class="tab active" data-view="races" role="tab">Races</button>
+    <button class="tab" data-view="drivers" role="tab">Drivers</button>
+    <button class="tab" data-view="favorites" role="tab">
+      Favorites <span class="fav-count" id="favCount">0</span>
+    </button>
+  </nav>
+
+  <div class="toolbar">
+    <div class="search-wrap">
+      <svg viewBox="0 0 24 24" class="search-icon" aria-hidden="true"><path d="M21 21l-4.35-4.35M17 11a6 6 0 11-12 0 6 6 0 0112 0z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <input type="search" id="search" placeholder="Search races, circuits, drivers, teams…" autocomplete="off" />
+    </div>
+    <div class="filter-chips" id="filterChips"></div>
+  </div>
+
+  <main id="content" class="content"></main>
+
+  <footer class="site-footer">
+    <p>Illustrative 2026 season data — favorites are saved to a live database. Ask to wire in real-time results any time.</p>
+  </footer>
+
+  <script src="/app.js"></script>
+</body>
+</html>
